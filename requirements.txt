@@ -1,0 +1,11 @@
+click==8.1.7
+getkey==0.6.5
+markdown-it-py==3.0.0
+mdurl==0.1.2
+psycopg2==2.9.9
+Pygments==2.18.0
+python-editor==1.0.4
+rich==13.7.1
+shellingham==1.5.4
+typer==0.12.3
+typing_extensions==4.12.2
