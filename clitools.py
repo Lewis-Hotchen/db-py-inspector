@@ -1,4 +1,5 @@
 from decimal import Decimal
+from os import name, system
 
 from rich.console import Console
 from rich.table import Table
@@ -28,3 +29,13 @@ def print_table(columns: [], data):
         table.add_row(*row_data)
 
     console.print(table)
+
+
+def clear():
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')

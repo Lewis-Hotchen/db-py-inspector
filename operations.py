@@ -1,10 +1,10 @@
 import json
-
 import psycopg2
+from getkey import getkey
 from psycopg2 import extras
 
 import connection
-from clitools import print_table, JsonEncoder
+from clitools import print_table, JsonEncoder, clear
 from rich import print
 import typer
 
@@ -47,11 +47,25 @@ def query(config_name: str, editor: str = "vim", limit: int = 100):
 
         # Fetch all rows from database
         records = cursor.fetchall()
+        navigation = ""
+        row_pointer = 0
+        while navigation != "q":
+            clear()
+            record_slice = records[row_pointer: row_pointer + limit]
+            print_table(col_names, record_slice)
+            print("Press UP or DOWN to navigate :arrow_up_down: (q to quit)")
+            navigation = getkey()
+            if navigation == "\x1b[A":
+                if row_pointer - limit < 0:
+                    continue
+                row_pointer -= limit
 
-        for row_count in range(0, len(records), limit):
-            slice = records[row_count: row_count+limit]
-            print_table(col_names, slice)
-            input("Press Enter to continue...")
+            elif navigation == "\x1b[B":
+                if row_pointer + limit >= len(records):
+                    continue
+                row_pointer += limit
+            else:
+                continue
 
         cursor.close()
     except Exception as e:
